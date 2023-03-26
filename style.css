@@ -31,13 +31,16 @@ main {
     background-color: #565b62; 
 }
 
-.contenedorCarrito {
-    margin: auto;
-    width: 80%;
-    text-align: center;
-}
 
-.mangas {
+
+.manga {
+    text-align: center;
+    
+}
+.mangas h1{
+    font-size: 80px;
+}
+.contenedor-manga{
     display: flex;
     margin: auto;
     width: 75%;
@@ -45,8 +48,7 @@ main {
     flex-wrap: wrap;
     margin-top: 80px;
 }
-
-.mangas .cardManga {
+.contenedor-manga .cardManga {
     width: 200px;
     height: 400px;
     border: 1px 1px 20px 1px black;
@@ -57,7 +59,7 @@ main {
     margin-bottom: 20px;
 }
 
-.mangas .cardManga img {
+.contenedor-manga .cardManga img {
     grid-column: 1/7;
     grid-row: 1/7;
     height: 250px;
@@ -66,7 +68,7 @@ main {
     margin: auto;
 }
 
-.mangas .cardManga h2 {
+.contenedor-manga .cardManga h2 {
     grid-column: 1/7;
     grid-row: 7/8;
     color: #EEEEEE;
@@ -79,7 +81,7 @@ main {
     padding-top: 10px;
 }
 
-.mangas .cardManga h3 {
+.contenedor-manga .cardManga h3 {
     grid-column: 1/7;
     grid-row: 8/9;
     color: #EEEEEE;
@@ -90,7 +92,7 @@ main {
     text-align: center;
 }
 
-.mangas .cardManga a {
+.contenedor-manga .cardManga a {
     grid-column: 1/7;
     grid-row: 9/12;
     color: #EEEEEE;
@@ -107,14 +109,14 @@ main {
     margin: 0 20px;
 }
 
-.mangas .cardManga a:hover {
+.contenedor-manga .cardManga a:hover {
     filter: brightness(120%);
     color: black;
     text-shadow: 1px 1px 1px #EEEEEE;
     cursor: pointer;
 }
 
-.mangas .cardManga .boxInfo-manga {
+.contenedor-manga .cardManga .boxInfo-manga {
     grid-column: 1/4;
     grid-row: 4/5;
     background-color: #fd71148e;
@@ -125,15 +127,51 @@ main {
     align-items: center;
 }
 
-.mangas .cardManga .boxInfo-manga h3 {
+.contenedor-manga .cardManga .boxInfo-manga h3 {
     -webkit-text-stroke-width: 0.1px;
     -webkit-text-stroke-color: black;
 }
 
-.mangas .cardManga .numero-manga {
+
+.contenedor-manga .cardManga .numero-manga {
     grid-column: 1/3;
     grid-row: 2/3;
     align-self: center;
     background-color: #fd71148e;
     border: 2px solid black;
+}
+.contenedorCarrito{
+    width: 60%;
+    margin: auto;
+    font-size: 30px;
+}
+.contenedorCarrito .cardCarrito{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+.contenedorCarrito .cardCarrito img{
+    height: 150px;
+    width: 100px;
+    justify-self: center;
+}
+.contenedorCarrito .cardCarrito h2{
+    text-align: center;
+    align-self: center ;
+    text-transform: uppercase;
+    font-size: 30px;
+    width: 30%;
+}
+.contenedorCarrito .cardCarrito h3{
+    text-align: center;
+    align-self: center ;
+    font-size: 27px;
+    width: 20%;
+}
+/* footer */
+footer{
+    background-color: black;
+    height: 20vh;
+    padding-top: 10px;
 }
