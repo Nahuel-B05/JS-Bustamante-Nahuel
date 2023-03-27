@@ -119,29 +119,47 @@ function botonClick (id,funcion){
 function carritoAdd(e){
         let botonId = Number(e.target.getAttribute('id'))
         let addProducto = productos.find((el)=>el.id === botonId)
-        let {nombre,vol,precio, img} = addProducto
-        
-        
-        
-        
-        pushear (addProducto,nombre,vol,precio,img)
-}
-function pushear (array,nombre,vol,precio,img){
-        carrito.push(array)
-        render(nombre,vol,precio,img)
+        let {id} =addProducto
+        let cantidadCarrito = carrito.some((el)=> el.id === id)
+        //si existe en el carro
+        if(cantidadCarrito){
+                let prodCarrito = carrito.find((el)=>el.id === id)//busco el prod en el carrito
+                let indiceManga = carrito.indexOf(prodCarrito)  //identifico su indice
+                let cantidad = carrito[indiceManga].cantidad+=1 //le sumo en cantidad +1
+                renderExistente(cantidad,id)
+        }
+        //si no existe
+        else{
+                let addProdCantidad= {...addProducto, cantidad : 1}
+                let {nombre,vol,id,precio, img, cantidad } = addProdCantidad
+                pushear (carrito, addProdCantidad)
+                render(nombre,vol,id,precio,img,cantidad)
+        }        
+        }
 
+function pushear (arrayPrincipal, arraySecundario){
+        arrayPrincipal.push(arraySecundario)
 }
-function render(nombre,vol,precio,img){
+
+function render(nombre,vol,id,precio,img,cantidad){
         let cardCarrito = document.createElement('div')
         cardCarrito.innerHTML=`  
         <img src="${img}"alt="Manga">
         <h2>${nombre}</h2>
         <h3>Vol: ${vol}</h3>
         <h3>Precio: $ ${precio}</h3>
-        <h3>Cantidad: </h3>
+        <h3 id="manga-${id}">Cantidad: ${cantidad}</h3>
+        <button class=boton>+</button>
+        <button class=boton>-</button>
         `
         let contenedor = document.getElementById('contenedorCarro')
         cardCarrito.className='cardCarrito'
         contenedor.append(cardCarrito)
 }
+function renderExistente(numCantidad,mangaID){
+        let direccion = document.getElementById(`manga-${mangaID}`)
+        direccion.innerText =`Cantidad: ${numCantidad}`
+}
+
+
 crearProductos()

@@ -169,6 +169,12 @@ main {
     font-size: 27px;
     width: 20%;
 }
+.contenedorCarrito .cardCarrito .boton{
+    width: 30px;
+    height: 30px;
+    align-self: center;
+    margin: 0px 3px;
+}
 /* footer */
 footer{
     background-color: black;
