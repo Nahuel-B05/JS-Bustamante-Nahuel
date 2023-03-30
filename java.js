@@ -13,9 +13,7 @@ const productos = [
 ]
 let carrito = [];
 let stringReducido = 0;
-let strinMenos =0;
-let carroFull= 0;
-let carroL = []
+let strinMenos = 0;
 function crearProductos() {
         for (const producto of productos) {
                 let { id, nombre, precio, vol, img } = producto
@@ -46,35 +44,35 @@ function carritoAdd(e) {
         let addProducto = productos.find((el) => el.id === botonId)
         let { id } = addProducto
         let enCarrito = carrito.some((el) => el.id === id)
-        preguntaEnCarrito(enCarrito,id,addProducto)
+        preguntaEnCarrito(enCarrito, id, addProducto)
 }
 
 function sumarIndiceBoton(e) {
         let botonID = e.target.getAttribute('id')
-        eliminoS(botonID,'mas')
+        eliminoS(botonID, 'mas')
         let prodCarrito = carrito.find((el) => el.id === stringReducido)//busco el prod en el carrito, comparando con la cadena reducida del boton +
         let indiceManga = carrito.indexOf(prodCarrito)  //identifico su indice
         let cantidad = carrito[indiceManga].cantidad += 1 //le sumo 1 a cantidad
         renderExistente(cantidad, stringReducido)
-        
+
 
 }
 function restarIndiceBoton(e) {
         let botonID = e.target.getAttribute('id')
-        eliminoS(botonID,'menos')
+        eliminoS(botonID, 'menos')
         let prodCarrito = carrito.find((el) => el.id === stringReducido)//busco el prod en el carrito, comparando con la cadena reducida del boton +
         let indiceManga = carrito.indexOf(prodCarrito)  //identifico su indice
-        if (carrito[indiceManga].cantidad === 1){
+        if (carrito[indiceManga].cantidad === 1) {
                 let borrar = document.getElementById(`card${stringReducido}`)
                 alert('Desea borrar el item?')
-                carrito.splice(indiceManga,1)
+                carrito.splice(indiceManga, 1)
                 borrar.remove();
                 localS()
-        }else{
+        } else {
                 let cantidad = carrito[indiceManga].cantidad -= 1
                 renderExistente(cantidad, stringReducido)
         }
-        }
+}
 
 
 
@@ -96,70 +94,85 @@ function render(nombre, vol, id, precio, img, cantidad) {
         <button class=boton id=menos${id}>-</button>
         `
         let contenedor = document.getElementById('contenedorCarro')
-        cardCarrito.className =`cardCarrito`
+        cardCarrito.className = `cardCarrito`
         contenedor.append(cardCarrito)
-        clickMas(`mas${id}`,`${id}`)
-        clickMenos(`menos${id}`,`${id}`)
+        clickMas(`mas${id}`, `${id}`)
+        clickMenos(`menos${id}`, `${id}`)
+        renderBotonVaciar()
 }
 function renderExistente(numCantidad, mangaID) {
         let direccion = document.getElementById(`manga-${mangaID}`)
         direccion.innerText = `Cantidad: ${numCantidad}`
-        // localS()
+        localS()
 }
-function clickMenos(elID,numero){
+function clickMenos(elID, numero) {
         let menos = document.getElementById(elID)
-        menos.addEventListener('click',restarIndiceBoton)
+        menos.addEventListener('click', restarIndiceBoton)
         Number(numero)
         return strinMenos = numero
 }
-function clickMas(elID){
+function clickMas(elID) {
         let mas = document.getElementById(elID)
-        mas.addEventListener('click',sumarIndiceBoton)
-} 
-function eliminoS(botonID, cadena){
+        mas.addEventListener('click', sumarIndiceBoton)
+}
+function eliminoS(botonID, cadena) {
         let a = botonID;
         let b = cadena
         let c = Number(a.substring(b.length)) //elimino el mas del ID del boton
         return stringReducido = c
 }
-function preguntaEnCarrito(enCarrito,id,addProducto){
+function preguntaEnCarrito(enCarrito, id, addProducto) {
         if (enCarrito) {
                 let prodCarrito = carrito.find((el) => el.id === id)//busco el prod en el carrito
                 let indiceManga = carrito.indexOf(prodCarrito)  //identifico su indice
                 let cantidad = carrito[indiceManga].cantidad += 1
                 renderExistente(cantidad, id)
-                        }
+        }
         else {
                 let addProdCantidad = { ...addProducto, cantidad: 1 }
                 let { nombre, vol, id, precio, img, cantidad } = addProdCantidad
                 pushear(carrito, addProdCantidad)
                 render(nombre, vol, id, precio, img, cantidad)
-        }}
-
-function localS(){
-                const enJSON = JSON.stringify(carrito)
-                localStorage.setItem('carrito',enJSON)
-                // let carritoLocalS = localStorage.getItem('carrito')
-                // carritoLocalS = JSON.parse(carritoLocalS)
         }
-//Boton para testear estados
-// function boton(){
-//         let elboton = document.getElementById('botonaso')
-//         elboton.addEventListener('click',hagoClick)
-//         }
-// function hagoClick(){
-//         console.log(carroL)
-//         if (carrito.length == 0){
-//                 let carritoLocalS = localStorage.getItem('carrito')
-//                 carritoLocalS = JSON.parse(carritoLocalS)
-//                 for(datos of carritoLocalS){
-//                         let {nombre, id, img, vol,precio,cantidad}=datos
-//                         console.log(nombre,id,img,vol,precio,cantidad)
-//                         render(nombre,id, img, vol,precio,cantidad)
-//                 }
-//         }else if (carrito.length===0){
-                
-//         }
-// }
+}
+
+function localS() {
+        const enJSON = JSON.stringify(carrito)
+        localStorage.setItem('carrito', enJSON)
+        // let carritoLocalS = localStorage.getItem('carrito')
+        // carritoLocalS = JSON.parse(carritoLocalS)
+}
+function renderBotonVaciar() {
+        if (document.getElementById('vaciarCarro')) {
+                botonClick('vaciarCarro', vaciarCarro)
+        } else {
+                let divBoton = document.createElement('button')
+                divBoton.setAttribute('id', 'vaciarCarro')
+                divBoton.innerText = 'Vaciar Carrito'
+                let botonVaciar = document.getElementById('contenedor-vaciar')
+                divBoton.className = 'boton-vaciar'
+                botonVaciar.append(divBoton)
+                botonClick('vaciarCarro', vaciarCarro)
+        }
+}
+function vaciarCarro() {
+        carrito = [];
+        localStorage.clear()
+        let boxes = document.querySelectorAll('.cardCarrito');
+        boxes.forEach(box => {
+                box.remove();
+        });
+        let boton = document.getElementById('vaciarCarro');
+        boton.remove()
+
+}
+if (localStorage.getItem('carrito')) {
+        let carroLocS = localStorage.getItem('carrito')
+        carroLocS = JSON.parse(carroLocS)
+        carrito = carroLocS
+        for (manga of carrito) {
+                let { nombre, vol, id, precio, img, cantidad } = manga
+                render(nombre, vol, id, precio, img, cantidad)
+        }
+}
 crearProductos()
-// boton()
