@@ -175,6 +175,23 @@ main {
     align-self: center;
     margin: 0px 3px;
 }
+.boton-vaciar{
+    background-color: #fd7014;
+    color: black;
+    padding: 10px 20px;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-radius: 10px;
+}
+.boton {
+    background-color: #fd7014;
+    color: black;
+    padding: 5px 10px;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-radius: 10px;
+    text-align: center;
+}
 /* footer */
 footer{
     background-color: black;
