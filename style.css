@@ -99,13 +99,17 @@ main {
 
 
 
-.manga {
-    text-align: center;
+.mangas {
+    padding-top: 100px;
 
 }
 
 .mangas h1 {
     font-size: 80px;
+    color: #EEEEEE;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 3px black;
+
 }
 
 .contenedor-manga {
@@ -215,6 +219,13 @@ main {
     margin: auto;
     font-size: 30px;
 }
+.contenedorCarrito h2{
+    color: #EEEEEE;
+    text-align: center;
+    letter-spacing: 1px;
+    font-size: 50px;
+    text-shadow: 1px 1px 3px black;
+}
 
 .contenedorCarrito .cardCarrito {
     display: flex;
@@ -229,19 +240,23 @@ main {
     justify-self: center;
 }
 
-.contenedorCarrito .cardCarrito h2 {
+.contenedorCarrito .cardCarrito h3 {
     text-align: center;
     align-self: center;
     text-transform: uppercase;
     font-size: 30px;
     width: 30%;
+    color: #EEEEEE;
+    text-shadow: 1px 1px 3px black;
 }
 
-.contenedorCarrito .cardCarrito h3 {
+.contenedorCarrito .cardCarrito h4 {
     text-align: center;
     align-self: center;
     font-size: 27px;
     width: 20%;
+    color: #EEEEEE;
+    text-shadow: 1px 1px 3px black;
 }
 
 .contenedorCarrito .cardCarrito .boton {
@@ -255,9 +270,15 @@ main {
     background-color: #fd7014;
     color: black;
     padding: 10px 20px;
-    font-size: 14px;
+    font-size: 18px;
     text-transform: uppercase;
     border-radius: 10px;
+    box-shadow: 1px 1px 2px black;
+    margin-bottom: 30px;
+}
+.boton-vaciar:hover{
+    background-color: black;
+    color: #FD7014;
 }
 
 .boton {
@@ -268,6 +289,36 @@ main {
     text-transform: uppercase;
     border-radius: 10px;
     text-align: center;
+    box-shadow: 1px 1px 3px black;
+}
+.boton:hover{
+    background-color:black;
+    color: #FD7014;
+}
+#contenedor-vaciar{
+    margin: auto;
+    width: 50%;
+    display: flex;
+    justify-content: space-evenly;
+}
+.btn{
+    background-color: #FD7014;
+    color: black;
+    padding: 10px;
+    margin-left: 20px;
+    border-radius: 10px;
+}
+.btn-success{
+    color: black;
+    background-color: rgb(155, 224, 50);
+}
+.btn-danger{
+    color: black;
+    background-color: rgb(254, 40, 40);
+}
+.btn:hover{
+    background-color:black;
+    color: #FD7014;
 }
 
 /* footer */

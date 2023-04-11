@@ -35,13 +35,13 @@
 
 const contenedor = document.getElementById('productos')
 fetch('./data.json')
-        .then((res)=>res.json())
-        .then ((data)=> {
-                data.forEach((producto)=>{
-                let {nombre, id, vol, precio, img} = producto
-                productos.push(producto)
-                let cardManga = document.createElement('div');
-                cardManga.innerHTML = `
+        .then((res) => res.json())
+        .then((data) => {
+                data.forEach((producto) => {
+                        let { nombre, id, vol, precio, img } = producto
+                        productos.push(producto)
+                        let cardManga = document.createElement('div');
+                        cardManga.innerHTML = `
                 <img src="${img}"alt="Manga">
                 <h2>${nombre}</h2>
                 <h3>$ ${precio}</h3>
@@ -50,14 +50,14 @@ fetch('./data.json')
                 <h3>#${vol}</h3>
                 </div>
                 `
-                let contenedor = document.getElementById('productos')
-                cardManga.className = 'cardManga'
-                contenedor.append(cardManga)
-                botonClick(id, carritoAdd)
+                        let contenedor = document.getElementById('productos')
+                        cardManga.className = 'cardManga'
+                        contenedor.append(cardManga)
+                        botonClick(id, carritoAdd)
                 })
         })
-        // .catch((err) => console.error(`No se cargo correctamente los datos`));
-let productos =[]
+// .catch((err) => console.error(`No se cargo correctamente los datos`));
+let productos = []
 let carrito = [];
 let stringReducido = 0;
 let strinMenos = 0;
@@ -71,9 +71,16 @@ function botonClick(id, funcion) {
 function carritoAdd(e) {
         let botonId = Number(e.target.getAttribute('id'))
         let addProducto = productos.find((el) => el.id === botonId)
-        let { id } = addProducto
+        let { id, nombre, vol } = addProducto
         let enCarrito = carrito.some((el) => el.id === id)
         preguntaEnCarrito(enCarrito, id, addProducto)
+        Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: `Agrego ${nombre} ${vol} a su Carrito`,
+                showConfirmButton: false,
+                timer: 700
+        })
 }
 
 function sumarIndiceBoton(e) {
@@ -92,12 +99,45 @@ function restarIndiceBoton(e) {
         let prodCarrito = carrito.find((el) => el.id === stringReducido)//busco el prod en el carrito, comparando con la cadena reducida del boton +
         let indiceManga = carrito.indexOf(prodCarrito)  //identifico su indice
         if (carrito[indiceManga].cantidad === 1) {
-                let borrar = document.getElementById(`card${stringReducido}`)
-                alert('Desea borrar el item?')
-                carrito.splice(indiceManga, 1)
-                borrar.remove();
-                localS()
-                borrarboton()
+                const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                                confirmButton: 'btn btn-success',
+                                cancelButton: 'btn btn-danger'
+                        },
+                        buttonsStyling: false
+                })
+
+                swalWithBootstrapButtons.fire({
+                        title: 'Estas seguro de borrar del carrito?',
+                        text: "vas a perder este producto",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Si, Deseo Eliminarlo',
+                        cancelButtonText: 'No, cancelar!',
+                        reverseButtons: true
+                }).then((result) => {
+                        if (result.isConfirmed) {
+                                swalWithBootstrapButtons.fire(
+                                        'Eliminado!',
+                                        'Tu articulo ha sido Eliminado',
+                                        'warning'
+                                )
+                                let borrar = document.getElementById(`card${stringReducido}`)
+                                carrito.splice(indiceManga, 1)
+                                borrar.remove();
+                                localS()
+                                borrarboton()
+                        } else if (
+                                /* Read more about handling dismissals below */
+                                result.dismiss === Swal.DismissReason.cancel
+                        ) {
+                                swalWithBootstrapButtons.fire(
+                                        'Cancelado',
+                                        'Su Articulo sigue en el Carrito',
+                                        'success'
+                                )
+                        }
+                })
         } else {
                 let cantidad = carrito[indiceManga].cantidad -= 1
                 renderExistente(cantidad, stringReducido)
@@ -116,10 +156,10 @@ function render(nombre, vol, id, precio, img, cantidad) {
         cardCarrito.setAttribute('id', `card${id}`)
         cardCarrito.innerHTML = `  
         <img src="${img}"alt="Manga">
-        <h2>${nombre}</h2>
-        <h3>Vol: ${vol}</h3>
-        <h3>Precio: $ ${precio}</h3>
-        <h3 id="manga-${id}">Cantidad: ${cantidad}</h3>
+        <h3>${nombre}</h3>
+        <h4>Vol: ${vol}</h4>
+        <h4>Precio: $ ${precio}</h4>
+        <h4 id="manga-${id}">Cantidad: ${cantidad}</h4>
         <button class=boton id=mas${id}>+</button>
         <button class=boton id=menos${id}>-</button>
         `
@@ -129,6 +169,7 @@ function render(nombre, vol, id, precio, img, cantidad) {
         clickMas(`mas${id}`, `${id}`)
         clickMenos(`menos${id}`, `${id}`)
         renderBotonVaciar()
+        renderBotonFinalizar()
 }
 function renderExistente(numCantidad, mangaID) {
         let direccion = document.getElementById(`manga-${mangaID}`)
@@ -185,15 +226,62 @@ function renderBotonVaciar() {
                 botonClick('vaciarCarro', vaciarCarro)
         }
 }
+function renderBotonFinalizar() {
+        if (!document.getElementById('Fin')) {
+                let divBoton = document.createElement('button')
+                divBoton.setAttribute('id', 'Fin')
+                divBoton.innerText = 'Finalizar Compra'
+                let botonF = document.getElementById('contenedor-vaciar')
+                divBoton.className = 'boton-vaciar'
+                botonF.append(divBoton)
+        }
+}
 function vaciarCarro() {
-        carrito=[]
-        localStorage.clear()
-        let boxes = document.querySelectorAll('.cardCarrito');
-        boxes.forEach(box => {
-                box.remove();
-        });
-        let boton = document.getElementById('vaciarCarro');
-        boton.remove()
+        const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+                title: 'Estas seguro de vaciar el Carrito?',
+                text: "Vas a perder las compras guardadas",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, Vaciar el Carrito',
+                cancelButtonText: 'No, Deseo Seguir Comprando!',
+                reverseButtons: true
+        }).then((result) => {
+                if (result.isConfirmed) {
+                        swalWithBootstrapButtons.fire(
+                                'Eliminado!',
+                                'Se ha Vaciado el Carrito',
+                                'error'
+                        )
+                        carrito = []
+                        localStorage.clear()
+                        let boxes = document.querySelectorAll('.cardCarrito');
+                        boxes.forEach(box => {
+                                box.remove();
+                        });
+                        let boton = document.getElementById('vaciarCarro');
+                        let botonf = document.getElementById('Fin')
+                        boton.remove()
+                        botonf.remove()
+                } else if (
+                        /* Read more about handling dismissals below */
+                        result.dismiss === Swal.DismissReason.cancel
+                ) {
+                        swalWithBootstrapButtons.fire(
+                                'Cancelado',
+                                'Puede seguir comprando :)',
+                                'success'
+                        )
+                }
+        })
+
 }
 
 if (localStorage.getItem('carrito')) {
@@ -205,8 +293,9 @@ if (localStorage.getItem('carrito')) {
                 render(nombre, vol, id, precio, img, cantidad)
         }
 }
-function borrarboton (){  
-        if(carrito==0){
-        document.getElementById('vaciarCarro').remove()}
+function borrarboton() {
+        if (carrito == 0) {
+                document.getElementById('vaciarCarro').remove()
+        }
 }
 // crearProductos()
